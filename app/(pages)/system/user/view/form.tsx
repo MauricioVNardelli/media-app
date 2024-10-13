@@ -34,9 +34,9 @@ export default function FormUser({ id, defaultValue }: IFormProps) {
       if (isInserting) response = await createUser(data);
       else {
         const changedData = Object.keys(dirtyFields).reduce((acc, key) => {
-          acc[key] = data[key];
+          acc[key] = data[key as keyof IUser];
           return acc;
-        }, {}) as IUser;
+        }, {} as Record<string, any>) as IUser;
 
         response = await updateUser(id, changedData);
       }

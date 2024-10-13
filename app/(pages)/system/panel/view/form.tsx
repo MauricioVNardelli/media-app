@@ -46,9 +46,9 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
       if (isInserting) response = await createPanel(data);
       else {
         const changedData = Object.keys(dirtyFields).reduce((acc, key) => {
-          acc[key] = data[key];
+          acc[key] = data[key as keyof IPanel];
           return acc;
-        }, {}) as IPanel;
+        }, {} as Record<string, any>) as IPanel;
 
         response = await updatePanel(id, changedData);
       }
