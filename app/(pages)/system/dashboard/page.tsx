@@ -35,9 +35,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (medias && isUserTV && medias[currentMedia].duration) {
-      let duration = medias[currentMedia].duration;
-
-      if (duration < 2000) duration = 5000;
+      let duration = medias[currentMedia].duration * 1000;
 
       setTimeout(() => {
         if (currentMedia == medias.length - 1) setCurrentMedia(0);
