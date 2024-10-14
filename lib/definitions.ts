@@ -49,4 +49,5 @@ export interface IPanelMedia {
   panelId: string;
   mediaId: string;
   duration: number;
+  order: number;
 }

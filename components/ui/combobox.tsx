@@ -46,7 +46,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
         .toLowerCase()
         .includes(debouncedSearch.toLowerCase())
     );
-    console.log("aaaaaaaa");
+
     setOpenList(dataFilter.length > 0 || debouncedSearch !== "");
     setDataFilter(dataFilter);
   }, [debouncedSearch]);

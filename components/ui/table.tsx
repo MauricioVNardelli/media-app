@@ -1,7 +1,7 @@
 import clsx from "clsx";
-import { Trash } from "lucide-react";
+import { LoaderCircle, Trash } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { MouseEvent } from "react";
+import { MouseEvent, useState, useTransition } from "react";
 
 type TColumn = {
   fieldName: string;
@@ -13,7 +13,7 @@ interface ITableProps extends React.TableHTMLAttributes<HTMLElement> {
   data: any[];
   hasView?: boolean;
   hasDelete?: boolean;
-  onRemoveClick?: (prId: string) => void;
+  onRemoveClick?: (prId: string) => Promise<void>;
 }
 
 export function Table({
@@ -58,11 +58,23 @@ function Header(props: { columns: TColumn[]; hasDelete: boolean }) {
 function Body(props: ITableProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const [isPending, startTransition] = useTransition();
+  const [pendingId, setPendingId] = useState("");
 
-  function HandleLineClick(event: MouseEvent<HTMLTableRowElement>) {
+  function handleLineClick(event: MouseEvent<HTMLTableRowElement>) {
     event.preventDefault();
 
     router.push(`${pathname}/view/${event.currentTarget.id}`);
+  }
+
+  function handleRemoveClick(prValue: any) {
+    setPendingId(prValue["id"]);
+
+    startTransition(async () => {
+      if (props.onRemoveClick) {
+        await props.onRemoveClick(prValue["id"]);
+      }
+    });
   }
 
   return (
@@ -73,7 +85,7 @@ function Body(props: ITableProps) {
             <tr
               key={value["id"]}
               id={value["id"]}
-              onDoubleClick={props.hasView ? HandleLineClick : undefined}
+              onDoubleClick={props.hasView ? handleLineClick : undefined}
               className={clsx(
                 "h-8 border-b border-b-gray-600 bg-gray-700",
                 "transition-colors hover:bg-gray-800 hover:bg-gray-800/60"
@@ -88,13 +100,13 @@ function Body(props: ITableProps) {
               })}
               {props.hasDelete && (
                 <td className="flex justify-center p-2">
-                  <button
-                    onClick={() =>
-                      props.onRemoveClick && props.onRemoveClick(value["id"])
-                    }
-                  >
-                    <Trash className="text-end text-gray-400 hover:text-red-700" />
-                  </button>
+                  {isPending && value["id"] == pendingId ? (
+                    <LoaderCircle className="animate-spin mr-1 text-gray-400" />
+                  ) : (
+                    <button onClick={() => handleRemoveClick(value)}>
+                      <Trash className="text-end text-gray-400 hover:text-red-700" />
+                    </button>
+                  )}
                 </td>
               )}
             </tr>

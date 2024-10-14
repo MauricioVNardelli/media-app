@@ -8,21 +8,23 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Table } from "@/components/ui/table";
 import { toast } from "sonner";
-
-interface IFormMediaPanel {
-  panelId: string;
-}
+import { useForm } from "react-hook-form";
+import { Form } from "@/components/ui/form";
 
 const headerTable = [
+  { fieldName: "order", title: "Seq" },
   { fieldName: "name", title: "Nome" },
   { fieldName: "duration", title: "Duração(s)" },
 ];
 
-export function FormMedia(props: IFormMediaPanel) {
+export function FormMedia(props: { panelId: string }) {
   const [medias, setMedias] = useState<IMedia[]>();
   const [valueSelect, setValueSelect] = useState("");
-  const [isPending, startTransition] = useTransition();
-  const [duration, setDuration] = useState(60);
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<IPanelMedia>();
 
   useEffect(() => {
     getMedia();
@@ -34,25 +36,24 @@ export function FormMedia(props: IFormMediaPanel) {
     setMedias(response);
   }
 
-  function handleAdd() {
-    startTransition(async () => {
-      const data = {
-        mediaId: valueSelect,
-        panelId: props.panelId,
-        duration: duration,
-      } as IPanelMedia;
-
-      const response = await createMediaPanel(data);
-
-      if (response?.error) {
-        toast.warning(response.error.message);
-      } else await getMedia();
-    });
+  async function handleRemove(prId: string) {
+    //await deleteMediaPanel(props.panelId, prId);
+    await getMedia();
   }
 
-  async function handleRemove(prId: string) {
-    await deleteMediaPanel(props.panelId, prId);
-    await getMedia();
+  async function onSubmit(data: IPanelMedia) {
+    const newData = {
+      mediaId: valueSelect,
+      panelId: props.panelId,
+      duration: data.duration,
+      order: data.order,
+    } as IPanelMedia;
+
+    const response = await createMediaPanel(newData);
+
+    if (response?.error) {
+      toast.warning(response.error.message);
+    } else await getMedia();
   }
 
   return (
@@ -61,34 +62,35 @@ export function FormMedia(props: IFormMediaPanel) {
         Mídia
       </p>
 
-      <div className="flex my-4 items-center gap-2">
+      <Form
+        hasSaveButton={false}
+        isSubmitting={isSubmitting}
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex my-4 items-center gap-2"
+      >
         <ComboBox
           fieldView="name"
           fieldValue="id"
-          title="Adicionar mídia"
+          title="Nome"
           src="/medias"
           className="flex-1"
           onValueChange={setValueSelect}
           value={valueSelect}
         />
 
-        <Input
-          type="number"
-          title="Duração (s)"
-          value={duration}
-          onChange={(event) => {
-            setDuration(event.currentTarget.valueAsNumber);
-          }}
-        />
+        <Input type="number" title="Ordem" {...register("order")} />
+
+        <Input type="number" title="Duração (s)" {...register("duration")} />
 
         <Button
-          onClick={handleAdd}
-          isLoading={isPending}
+          isLoading={isSubmitting}
+          type="submit"
           className="w-24 h-10 mt-6"
         >
           Adicionar
         </Button>
-      </div>
+      </Form>
+
       {medias && (
         <Table
           hasDelete
