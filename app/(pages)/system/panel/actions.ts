@@ -23,15 +23,22 @@ export async function getMedias(prPanelId: string): Promise<IMedia[]> {
   return response;
 }
 
-export async function createMediaPanel(prData: IPanelMedia) {
-  const response = await api.post("/panel/media", prData);
+export async function createMediaPanel(
+  prData: IPanelMedia
+): Promise<IResultActions | undefined> {
+  try {
+    await api.post("/panel/media", prData);
 
-  return response;
+    return { sucess: { value: "created" } };
+  } catch (error) {
+    return TreatError(error);
+  }
 }
 
-export async function deleteMediaPanel(prData: IPanelMedia) {
-  const response = await api.delete("/panel/media");
+export async function deleteMediaPanel(prPanelId: string, prMediaId: string) {
+  const response = await api.delete(`/panel/${prPanelId}/media/${prMediaId}`);
 
+  console.log("respinsee", response.data);
   return response;
 }
 

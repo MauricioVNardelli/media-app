@@ -53,14 +53,13 @@ export default function FormUser({ id, defaultValue }: IFormProps) {
       <Form
         onSubmit={handleSubmit(onSubmit)}
         isSubmitting={isSubmitting}
-        gridCols={2}
-        className="grid grid-cols-2 gap-3 mt-8"
+        className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-8"
       >
         <Input
           id="id"
           title="Código"
           hidden={isInserting}
-          className="col-span-2"
+          className="md:col-span-2"
           disabled
           {...register("id")}
         />

@@ -13,7 +13,7 @@ interface ITableProps extends React.TableHTMLAttributes<HTMLElement> {
   data: any[];
   hasView?: boolean;
   hasDelete?: boolean;
-  onRemoveClick?: () => void;
+  onRemoveClick?: (prId: string) => void;
 }
 
 export function Table({
@@ -89,7 +89,9 @@ function Body(props: ITableProps) {
               {props.hasDelete && (
                 <td className="flex justify-center p-2">
                   <button
-                    onClick={() => props.onRemoveClick && props.onRemoveClick()}
+                    onClick={() =>
+                      props.onRemoveClick && props.onRemoveClick(value["id"])
+                    }
                   >
                     <Trash className="text-end text-gray-400 hover:text-red-700" />
                   </button>

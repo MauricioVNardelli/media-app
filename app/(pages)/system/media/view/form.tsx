@@ -47,8 +47,7 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
       <Form
         onSubmit={handleSubmit(onSubmit)}
         isSubmitting={isSubmitting}
-        gridCols={2}
-        className="grid grid-cols-2 gap-3 mt-8"
+        className="grid md:grid-cols-2 gap-3 mt-8"
       >
         <Input id="name" title="Nome" {...register("name")} />
         <Select
@@ -70,7 +69,12 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
           {...register("description")}
         />
 
-        <Input id="file" title="URL" colSpan={2} {...register("file")} />
+        <Input
+          id="file"
+          title="URL"
+          className="md:col-span-2"
+          {...register("file")}
+        />
       </Form>
     </div>
   );
