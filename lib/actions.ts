@@ -24,3 +24,7 @@ export async function getValueFromUrl(prUrl: string): Promise<[]> {
 
   return response.data;
 }
+
+export async function signOut() {
+  cookies().delete("token");
+}

@@ -21,15 +21,8 @@ export async function updateUser(
   prId: string,
   prData: IUser
 ): Promise<IResultActions | undefined> {
-  const data = {
-    name: prData.name,
-    role: prData.role,
-    status: prData.status,
-    username: prData.username,
-  };
-
   try {
-    await api.patch(`/user/${prId}`, data);
+    await api.patch(`/user/${prId}`, prData);
 
     return { sucess: { value: "updated" } };
   } catch (error) {

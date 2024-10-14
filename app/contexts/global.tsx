@@ -1,10 +1,11 @@
 "use client";
 
-import { IUser } from "@/lib/definitions";
+import { createContext, useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
-import { createContext, use, useEffect, useState } from "react";
-import { getUser } from "@/lib/actions";
+
+import { IUser } from "@/lib/definitions";
+import { getUser, signOut as signOutAction } from "@/lib/actions";
 
 interface IGlobalContext {
   user: IUser | undefined;
@@ -37,7 +38,11 @@ export function GlobalProvider(props: { children: React.ReactNode }) {
     router.push("/system/dashboard");
   }
 
-  async function signOut() {}
+  async function signOut() {
+    await signOutAction();
+
+    router.push("/auth");
+  }
 
   return (
     <GlobalContext.Provider value={{ user, isAuthenticated, signIn, signOut }}>

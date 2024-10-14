@@ -17,8 +17,9 @@ export function Button({
         "flex items-center justify-center rounded-md h-10 min-w-20",
         "transition-colors",
         "text-white",
-        !classNameProps?.includes("bg-") && "bg-indigo-700",
-        "hover:bg-indigo-800 disabled:bg-indigo-800 disabled:text-gray-300",
+        !classNameProps?.includes("bg-") &&
+          "bg-indigo-700 hover:bg-indigo-800 disabled:bg-indigo-800",
+        "disabled:text-gray-300",
         classNameProps
       )}
       disabled={isLoading}

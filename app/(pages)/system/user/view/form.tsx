@@ -74,19 +74,14 @@ export default function FormUser({ id, defaultValue }: IFormProps) {
           values={const_user_role}
           {...register("role")}
         />
-        <Input
-          id="email"
-          title="E-mail"
-          colSpan={!isInserting ? 2 : undefined}
-          {...register("email")}
-        />
+
+        <Input id="email" title="E-mail" {...register("email")} />
 
         <Input
           id="password"
           title="Senha"
-          colSpan={2}
-          hidden={!isInserting}
           type="password"
+          colSpan={isInserting ? 2 : 1}
           {...register("password")}
         />
       </Form>

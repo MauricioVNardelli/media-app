@@ -46,7 +46,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
         .toLowerCase()
         .includes(debouncedSearch.toLowerCase())
     );
-
+    console.log("aaaaaaaa");
     setOpenList(dataFilter.length > 0 || debouncedSearch !== "");
     setDataFilter(dataFilter);
   }, [debouncedSearch]);
@@ -57,7 +57,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
   }
 
   return (
-    <Popover.Root open={openList}>
+    <Popover.Root open={openList} modal={openList}>
       <Popover.Trigger
         asChild
         onClick={() => {
@@ -100,47 +100,49 @@ function ComboBoxComponent(props: IComboBoxProps) {
           </div>
         </div>
       </Popover.Trigger>
-      <Popover.Content
-        onCloseAutoFocus={() => setSearch("")}
-        onPointerDownOutside={() => {
-          setOpenList(false);
-        }}
-        sideOffset={6}
-        style={{ width: "var(--radix-popover-trigger-width)" }}
-        className={clsx(
-          "flex flex-col items-center rounded-md p-4 space-y-2",
-          "bg-gray-800 text-gray-300"
-        )}
-      >
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Buscar..."
+      <Popover.Portal>
+        <Popover.Content
+          onCloseAutoFocus={() => setSearch("")}
+          onPointerDownOutside={() => {
+            setOpenList(false);
+          }}
+          sideOffset={6}
+          style={{ width: "var(--radix-popover-trigger-width)" }}
           className={clsx(
-            "w-full h-full outline-none border-b-2 p-2",
-            "border-b-indigo-800 bg-gray-800 text-gray-300"
+            "flex flex-col items-center rounded-md p-4 space-y-2",
+            "bg-gray-800 text-gray-300"
           )}
-        />
+        >
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar..."
+            className={clsx(
+              "w-full h-full outline-none border-b-2 p-2",
+              "border-b-indigo-800 bg-gray-800 text-gray-300"
+            )}
+          />
 
-        <ul className="w-full">
-          {dataFilter.length > 0 ? (
-            dataFilter.map((value) => {
-              return (
-                <li
-                  key={value.id}
-                  onClick={() => handleChangeValue(value)}
-                  className=" hover:bg-gray-700 p-2 rounded-md cursor-pointer"
-                >
-                  {value[props.fieldView]}
-                </li>
-              );
-            })
-          ) : (
-            <li className="p-2 rounded-sm">Nenhum registro encontrado!</li>
-          )}
-        </ul>
-      </Popover.Content>
+          <ul className="w-full">
+            {dataFilter.length > 0 ? (
+              dataFilter.map((value) => {
+                return (
+                  <li
+                    key={value.id}
+                    onClick={() => handleChangeValue(value)}
+                    className=" hover:bg-gray-700 p-2 rounded-md cursor-pointer"
+                  >
+                    {value[props.fieldView]}
+                  </li>
+                );
+              })
+            ) : (
+              <li className="p-2 rounded-sm">Nenhum registro encontrado!</li>
+            )}
+          </ul>
+        </Popover.Content>
+      </Popover.Portal>
     </Popover.Root>
   );
 }
