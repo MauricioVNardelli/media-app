@@ -14,7 +14,7 @@ import { Form } from "@/components/ui/form";
 const headerTable = [
   { fieldName: "order", title: "Seq" },
   { fieldName: "name", title: "Nome" },
-  { fieldName: "duration", title: "Duração(s)" },
+  { fieldName: "duration", title: "Duração (s)" },
 ];
 
 export function FormMedia(props: { panelId: string }) {
@@ -91,7 +91,7 @@ export function FormMedia(props: { panelId: string }) {
         </Button>
       </Form>
 
-      {medias && (
+      {medias ? (
         <Table
           hasDelete
           hasView={false}
@@ -99,6 +99,8 @@ export function FormMedia(props: { panelId: string }) {
           data={medias}
           onRemoveClick={handleRemove}
         />
+      ) : (
+        <p className="text-white">Carregando midias...</p>
       )}
     </div>
   );

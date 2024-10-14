@@ -32,7 +32,7 @@ export function Input({
           autoComplete={otherProps.title !== undefined ? "off" : "on"}
           type={typeInput}
           className={clsx(
-            "flex-1 outline-none w-full h-10 px-4 rounded-l-md",
+            "flex-1 outline-none w-full h-10 px-4 rounded-l-md ",
             isInputPassword ? "rounded-r-none" : "rounded-r-md",
             "disabled:text-gray-600 bg-gray-800 text-gray-300",
             classNameProps

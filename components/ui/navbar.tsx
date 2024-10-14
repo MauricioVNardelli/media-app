@@ -85,11 +85,14 @@ export default function NavBar() {
           <Popover.Content sideOffset={6}>
             <div
               className={clsx(
-                "p-5 border rounded-l-md",
+                "flex flex-col items-center p-5 border rounded-l-md",
                 "border-gray-600 bg-gray-700"
               )}
             >
-              <ul className="text-gray-300 space-y-2">
+              <p className="flex justify-center mb-3 pb-1 w-full border-b-2 border-b-indigo-500 text-gray-300">
+                {user?.username}
+              </p>
+              <ul className="text-gray-300 ">
                 <li
                   onClick={() => {
                     router.push(`/system/user/view/${user?.id}`);
@@ -99,10 +102,9 @@ export default function NavBar() {
                     "hover:bg-gray-800 hover:text-yellow-400 hover:cursor-pointer"
                   )}
                 >
-                  <Settings className="mr-4" />
+                  <Settings className="mr-4" size={20} />
                   <p className="text-gray-300">Alterar senha</p>
                 </li>
-                <div className="border-b border-b-gray-600" />
                 <li
                   onClick={() => {
                     signOut();
@@ -112,7 +114,7 @@ export default function NavBar() {
                     "hover:bg-gray-800 hover:text-red-700 hover:cursor-pointer"
                   )}
                 >
-                  <LogOut className="mr-4" />
+                  <LogOut className="mr-4" size={20} />
                   <p className="text-gray-300">Sair</p>
                 </li>
               </ul>
