@@ -24,7 +24,7 @@ export function Input({
       <div
         className={clsx(
           "flex flex-row rounded-md border",
-          "border-gray-600",
+          "bg-gray-800 border-gray-600",
           "focus-within:ring-1 focus-within:ring-indigo-500 focus-within:border-indigo-500"
         )}
       >
