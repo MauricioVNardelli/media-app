@@ -8,7 +8,6 @@ interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export function Input({
-  children,
   className: classNameProps,
   hidden,
   colSpan,
@@ -34,14 +33,12 @@ export function Input({
           type={typeInput}
           className={clsx(
             "flex-1 outline-none w-full h-10 px-4 rounded-l-md",
-            !isInputPassword && "rounded-r-md",
+            isInputPassword ? "rounded-r-none" : "rounded-r-md",
             "disabled:text-gray-600 bg-gray-800 text-gray-300",
             classNameProps
           )}
           {...otherProps}
-        >
-          {children}
-        </input>
+        />
         {isInputPassword && (
           <button
             type="button"
