@@ -38,8 +38,6 @@ export async function createMediaPanel(
 export async function deleteMediaPanel(prPanelId: string, prMediaId: string) {
   const url = `/panel/${prPanelId}/media/${prMediaId}`;
   const response = await api.delete(url);
-
-  return response;
 }
 
 export async function updatePanel(

@@ -37,7 +37,7 @@ export function FormMedia(props: { panelId: string }) {
   }
 
   async function handleRemove(prId: string) {
-    //await deleteMediaPanel(props.panelId, prId);
+    await deleteMediaPanel(props.panelId, prId);
     await getMedia();
   }
 
