@@ -4,13 +4,11 @@ import { useState } from "react";
 
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   hidden?: boolean;
-  colSpan?: number;
 }
 
 export function Input({
   className: classNameProps,
   hidden,
-  colSpan,
   type,
   ...otherProps
 }: IInputProps) {

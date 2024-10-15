@@ -80,7 +80,7 @@ export default function FormUser({ id, defaultValue }: IFormProps) {
           id="password"
           title="Senha"
           type="password"
-          colSpan={isInserting ? 2 : 1}
+          className="col-span-2"
           {...register("password")}
         />
       </Form>

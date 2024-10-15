@@ -53,7 +53,7 @@ export default function Dashboard() {
   return (
     <div
       id="page-dashboard"
-      className="flex justify-center items-center w-full h-full"
+      className="flex min-h-screen w-full items-center justify-center"
     >
       {!medias ? (
         <Loading />
