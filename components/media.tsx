@@ -31,7 +31,16 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
           className="w-full"
         />
       ) : (
-        <iframe
+        <video className="aspect-video w-full" preload="none" autoPlay>
+          <source src="/videos/video01.mp4" type="video/mp4" />
+        </video>
+      )}
+    </div>
+  );
+}
+
+/*
+<iframe
           className="aspect-video w-full"
           src={`${medias[currentMedia].file}&controls=0&autoplay=1`}
           title="YouTube video player"
@@ -39,7 +48,4 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         ></iframe>
-      )}
-    </div>
-  );
-}
+        */
