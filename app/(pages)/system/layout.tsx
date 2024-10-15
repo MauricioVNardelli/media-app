@@ -14,9 +14,9 @@ export default function SystemLayout({
   const isUserTV = user?.role == "TV";
 
   return (
-    <section className="h-full min-h-screen bg-gray-900">
+    <section className="flex h-full min-h-screen bg-gray-900">
       {!isUserTV && <NavBar />}
-      <div id="content" className={!isUserTV ? "p-10" : ""}>
+      <div id="content" className={clsx("w-full", !isUserTV ? "p-10" : "")}>
         {children}
       </div>
     </section>

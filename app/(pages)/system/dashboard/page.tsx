@@ -2,6 +2,8 @@
 
 import { GlobalContext } from "@/app/contexts/global";
 import { Media } from "@/components/media";
+import { Button } from "@/components/ui/button";
+import { Loading } from "@/components/ui/loading";
 import { getValueFromUrl } from "@/lib/actions";
 import { IMedia, IPanel } from "@/lib/definitions";
 import { useContext, useEffect, useState } from "react";
@@ -9,6 +11,7 @@ import { useContext, useEffect, useState } from "react";
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
   const [medias, setMedias] = useState<IMedia[]>();
+  const [start, setStart] = useState(false);
 
   async function getMedias() {
     const data = (await getValueFromUrl(
@@ -28,8 +31,44 @@ export default function Dashboard() {
     getMedias();
   }, [user]);
 
-  if (!medias)
-    return <p className="text-gray-300">Nenhuma mídia encontrada!</p>;
+  function handleButtonStart() {
+    setStart(true);
 
-  return <div id="page-dashboard">{medias && <Media medias={medias} />}</div>;
+    const elem = document.documentElement;
+
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if ((elem as any).mozRequestFullScreen) {
+      // Para Firefox
+      (elem as any).mozRequestFullScreen();
+    } else if ((elem as any).webkitRequestFullscreen) {
+      // Para Chrome, Safari e Opera
+      (elem as any).webkitRequestFullscreen();
+    } else if ((elem as any).msRequestFullscreen) {
+      // Para IE/Edge
+      (elem as any).msRequestFullscreen();
+    }
+  }
+
+  return (
+    <div
+      id="page-dashboard"
+      className="flex justify-center items-center w-full h-full"
+    >
+      {!medias ? (
+        <Loading />
+      ) : medias && start ? (
+        <Media medias={medias} />
+      ) : (
+        <Button
+          id="button-start"
+          className="w-32 h-24 font-semibold"
+          type="button"
+          onClick={handleButtonStart}
+        >
+          Iniciar
+        </Button>
+      )}
+    </div>
+  );
 }

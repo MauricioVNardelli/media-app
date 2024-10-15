@@ -28,10 +28,10 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
         <img
           alt={medias[currentMedia].name}
           src={medias[currentMedia].file}
-          className="w-full"
+          className="w-full h-full max-h-screen"
         />
       ) : (
-        <video className="aspect-video w-full" preload="none" autoPlay>
+        <video className="w-full h-full max-h-screen" preload="none" autoPlay>
           <source src="/videos/video01.mp4" type="video/mp4" />
         </video>
       )}

@@ -93,7 +93,7 @@ export function FormMedia(props: { panelId: string }) {
         <Button
           isLoading={isSubmitting}
           type="submit"
-          className="w-24 h-10 mt-6"
+          className="w-32 h-10 mt-6"
         >
           Adicionar
         </Button>

@@ -45,10 +45,9 @@ export default function Dashboard() {
       )}
 
       {medias && (
-        <Media
-          medias={medias}
-          className="rounded-md border-4 border-gray-800"
-        />
+        <div className="flex justify-center max-h-[calc(100vh-300px)] rounded-md border-4 border-gray-800">
+          <Media medias={medias} />
+        </div>
       )}
     </div>
   );
