@@ -1,5 +1,6 @@
 "use server";
 
+import { z } from "zod";
 import { IMedia, IPanel, IPanelMedia, IResultActions } from "@/lib/definitions";
 import { TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
@@ -26,6 +27,34 @@ export async function getMedias(prPanelId: string): Promise<IMedia[]> {
 export async function createMediaPanel(
   prData: IPanelMedia
 ): Promise<IResultActions | undefined> {
+  const schema = z
+    .object({
+      panelId: z.string(),
+      mediaId: z.string(),
+      duration: z.number({
+        required_error: "Duração obrigatória",
+        invalid_type_error: "Duração obrigatória",
+      }),
+      order: z.number({
+        required_error: "Ordem obrigatória",
+        invalid_type_error: "Ordem obrigatória",
+      }),
+    })
+    .required();
+
+  const resultParse = schema.safeParse(prData);
+
+  if (!resultParse.success) {
+    const errorMsg = resultParse.error.errors[0].message;
+
+    if (errorMsg)
+      return {
+        error: {
+          message: errorMsg,
+        },
+      };
+  }
+
   try {
     await api.post("/panel/media", prData);
 

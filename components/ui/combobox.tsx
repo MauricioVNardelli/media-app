@@ -88,6 +88,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
             >
               {data.length > 0 &&
                 props.value !== "" &&
+                props.value !== undefined &&
                 data.filter((value) => {
                   return value["id"] == props.value;
                 })[0][props.fieldView]}

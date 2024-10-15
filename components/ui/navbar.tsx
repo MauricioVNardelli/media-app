@@ -10,7 +10,6 @@ import { LogOut, Settings, User } from "lucide-react";
 interface INavBarLiProps extends React.LiHTMLAttributes<HTMLLIElement> {
   name: string;
   isActive?: boolean;
-  isUserTV?: boolean;
 }
 
 export default function NavBar() {
@@ -38,38 +37,46 @@ export default function NavBar() {
         src="https://tailwindcss.com/_next/static/media/tailwindcss-mark.3c5441fc7a190fb1800d4a5c7f07ba4b1345a9c8.svg"
         className="h-8 w-auto mx-5"
       />
+
       <nav className="flex flex-1 h-full items-center">
         <ul className="flex flex-row space-x-4 h-10">
           <NavBarLi
-            id="/system/dashboard"
+            id="/system/home"
             name="Início"
-            isActive={pathname.startsWith("/system/dashboard")}
+            isActive={pathname.startsWith("/system/home")}
             onClick={liHandleClick}
-            isUserTV={isUserTV}
           />
+
           <NavBarLi
             id="/system/user"
             name="Usuário"
             isActive={pathname.startsWith("/system/user")}
             onClick={liHandleClick}
-            isUserTV={isUserTV}
           />
+
           <NavBarLi
             id="/system/panel"
             name="Painel"
-            isActive={pathname.startsWith("/system/panel")}
+            isActive={pathname == "/system/panel"}
             onClick={liHandleClick}
-            isUserTV={isUserTV}
           />
+
           <NavBarLi
             id="/system/media"
             name="Mídia"
-            isActive={pathname.startsWith("/system/media")}
+            isActive={pathname == "/system/media"}
             onClick={liHandleClick}
-            isUserTV={isUserTV}
+          />
+
+          <NavBarLi
+            id="/system/panel/preview"
+            name="Visualizar"
+            isActive={pathname == "/system/panel/preview"}
+            onClick={liHandleClick}
           />
         </ul>
       </nav>
+
       <Popover.Root>
         <Popover.Trigger>
           <div
@@ -130,7 +137,6 @@ function NavBarLi({
   className,
   name,
   isActive,
-  isUserTV,
   ...otherProps
 }: INavBarLiProps) {
   return (
@@ -139,8 +145,7 @@ function NavBarLi({
         "flex items-center justify-center rounded-lg p-4 font-semibold shadow-inner",
         "text-gray-300 active:bg-gray-900 hover:cursor-pointer",
         !isActive && "hover:bg-gray-700 hover:text-white",
-        isActive && "bg-gray-900 hover:cursor-default",
-        isUserTV && "hidden"
+        isActive && "bg-gray-900 hover:cursor-default"
       )}
       {...otherProps}
     >

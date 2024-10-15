@@ -15,8 +15,8 @@ export default function SystemLayout({
 
   return (
     <section className="h-full min-h-screen bg-gray-900">
-      <NavBar />
-      <div id="layout" className={clsx(user && !isUserTV && "p-10")}>
+      {!isUserTV && <NavBar />}
+      <div id="content" className={!isUserTV ? "p-10" : ""}>
         {children}
       </div>
     </section>

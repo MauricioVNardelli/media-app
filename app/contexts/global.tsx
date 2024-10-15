@@ -35,7 +35,9 @@ export function GlobalProvider(props: { children: React.ReactNode }) {
     const decoded = jwtDecode(prToken) as { user: IUser };
 
     setUser(decoded.user);
-    router.push("/system/dashboard");
+
+    if (decoded.user.role == "TV") router.push("/system/dashboard");
+    else router.push("/system/home");
   }
 
   async function signOut() {

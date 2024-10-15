@@ -19,7 +19,7 @@ export async function getUser(): Promise<IUser | undefined> {
   }
 }
 
-export async function getValueFromUrl(prUrl: string): Promise<[]> {
+export async function getValueFromUrl(prUrl: string): Promise<any> {
   const response = await api.get(prUrl);
 
   return response.data;

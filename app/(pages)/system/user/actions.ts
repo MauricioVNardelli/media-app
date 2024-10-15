@@ -3,7 +3,6 @@
 import { IResultActions, IUser } from "@/lib/definitions";
 import { TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
-import { AxiosError } from "axios";
 
 export async function getUsers(): Promise<IUser[]> {
   const users = (await api.get("/users")).data as IUser[];

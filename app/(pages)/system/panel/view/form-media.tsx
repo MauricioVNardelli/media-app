@@ -78,9 +78,17 @@ export function FormMedia(props: { panelId: string }) {
           value={valueSelect}
         />
 
-        <Input type="number" title="Ordem" {...register("order")} />
+        <Input
+          type="number"
+          title="Ordem"
+          {...register("order", { valueAsNumber: true })}
+        />
 
-        <Input type="number" title="Duração (s)" {...register("duration")} />
+        <Input
+          type="number"
+          title="Duração (s)"
+          {...register("duration", { valueAsNumber: true })}
+        />
 
         <Button
           isLoading={isSubmitting}
