@@ -29,7 +29,6 @@ function ComboBoxComponent(props: IComboBoxProps) {
   const [debouncedSearch] = useDebounceValue(search, 300);
   const [fieldView, setFieldView] = useState("");
 
-  console.log("a");
   //Carrega os dados
   useEffect(() => {
     async function getData() {
