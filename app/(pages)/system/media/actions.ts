@@ -3,6 +3,7 @@
 import { IMedia, IResultActions } from "@/lib/definitions";
 import { TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
+import { put } from "@vercel/blob";
 
 export async function getMedias(): Promise<IMedia[]> {
   const medias = (await api.get("/medias")).data as IMedia[];
@@ -18,7 +19,8 @@ export async function getMedia(prId: string): Promise<IMedia> {
 
 export async function updateMedia(
   prId: string,
-  prData: IMedia
+  prData: IMedia,
+  prDataOld: IMedia
 ): Promise<IResultActions | undefined> {
   const data = JSON.stringify({
     name: prData.name,
@@ -30,9 +32,11 @@ export async function updateMedia(
 
   const dataJSON = JSON.parse(data);
 
-  console.log("data - Media", dataJSON);
-
   try {
+    if (prData.file !== prDataOld.file) {
+      if (prData.fileStream) await uploadFile("AR", prData.fileStream);
+    }
+
     await api.patch(`/media/${prId}`, dataJSON);
 
     return { sucess: { value: "updated" } };
@@ -51,4 +55,12 @@ export async function createMedia(
   } catch (error) {
     return TreatError(error);
   }
+}
+
+export async function uploadFile(prCompanyName: string, prFile: File) {
+  const blob = await put(prCompanyName + "/" + prFile.name, prFile, {
+    access: "public",
+  });
+
+  return blob;
 }

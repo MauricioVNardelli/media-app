@@ -12,6 +12,7 @@ interface IComboBoxProps {
   title: string;
   fieldView: string;
   fieldValue: string;
+  fieldData: string;
   src: string;
   control?: Control<any, any>;
   className?: string;
@@ -26,7 +27,9 @@ function ComboBoxComponent(props: IComboBoxProps) {
   const [isSearching, setIsSearching] = useState(false);
   const [openList, setOpenList] = useState(false);
   const [debouncedSearch] = useDebounceValue(search, 300);
+  const [fieldView, setFieldView] = useState("");
 
+  //Carrega os dados
   useEffect(() => {
     async function getData() {
       setIsSearching(true);
@@ -40,6 +43,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
     getData();
   }, []);
 
+  //Filtra um data ao pesquisar
   useEffect(() => {
     const dataFilter = data.filter((value) =>
       value[props.fieldView]
@@ -51,9 +55,24 @@ function ComboBoxComponent(props: IComboBoxProps) {
     setDataFilter(dataFilter);
   }, [debouncedSearch]);
 
+  //Filtra o valor selecionado para apresentar no button
+  useEffect(() => {
+    if (data.length > 0 && props.value !== "" && props.value !== undefined) {
+      const dataView = data.filter((value: any) => {
+        return value[props.fieldValue] == props.value;
+      })[0];
+
+      if (dataView && props.fieldView in dataView)
+        setFieldView(dataView[props.fieldView]);
+    }
+  }, [props.value]);
+
+  //Altera o valor selecionado
   function handleChangeValue(itemSelected: any) {
     setOpenList(false);
-    if (props.onValueChange) props.onValueChange(itemSelected["id"]);
+
+    if (props.onValueChange)
+      props.onValueChange(itemSelected[props.fieldValue]);
   }
 
   return (
@@ -86,12 +105,7 @@ function ComboBoxComponent(props: IComboBoxProps) {
                 "flex-1 text-start px-4 text-gray-300 disabled:text-gray-600"
               )}
             >
-              {data.length > 0 &&
-                props.value !== "" &&
-                props.value !== undefined &&
-                data.filter((value) => {
-                  return value["id"] == props.value;
-                })[0][props.fieldView]}
+              {fieldView}
             </button>
             {isSearching ? (
               <LoaderCircle className="w-10 h-5 animate-spin text-gray-400" />
@@ -154,7 +168,7 @@ export function ComboBox({ value, control, ...otherProps }: IComboBoxProps) {
   return (
     <Controller
       control={control}
-      name={otherProps.fieldValue}
+      name={otherProps.fieldData}
       render={({ field }) => {
         return (
           <ComboBoxComponent

@@ -1,12 +1,12 @@
 "use client";
 
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "@/app/contexts/global";
 import { Media } from "@/components/media";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { getValueFromUrl } from "@/lib/actions";
 import { IMedia, IPanel } from "@/lib/definitions";
-import { useContext, useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);

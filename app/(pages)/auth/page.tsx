@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GlobalContext } from "@/app/contexts/global";
+import { InputPassword } from "@/components/ui/input-password";
 
 export default function SignIn() {
   const [result, handleSignIn, isPending] = useActionState(signIn, null);
@@ -28,11 +29,17 @@ export default function SignIn() {
           Acesse sua conta
         </h1>
         <form action={handleSignIn} className="flex flex-col w-64 space-y-2">
-          <Input name="username" placeholder="Usuário" disabled={isPending} />
           <Input
+            autoComplete="on"
+            name="username"
+            placeholder="Usuário"
+            disabled={isPending}
+          />
+
+          <InputPassword
+            autoComplete="on"
             name="password"
             placeholder="Senha"
-            type="password"
             disabled={isPending}
           />
           <Button type="submit" isLoading={isPending}>

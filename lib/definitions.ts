@@ -42,6 +42,7 @@ export interface IMedia extends IBase {
   description: string;
   status: type_status;
   file: string;
+  fileStream?: File;
   duration?: number;
 }
 

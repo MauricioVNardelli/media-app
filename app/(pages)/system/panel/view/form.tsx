@@ -30,14 +30,14 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
     defaultValues: defaultValue,
   });
 
-  async function onSubmit(data: IPanel) {
+  async function onSubmit(prData: IPanel) {
     if (id != undefined) {
       let response;
 
-      if (isInserting) response = await createPanel(data);
+      if (isInserting) response = await createPanel(prData);
       else {
         const changedData = Object.keys(dirtyFields).reduce((acc, key) => {
-          acc[key] = data[key as keyof IPanel];
+          acc[key] = prData[key as keyof IPanel];
           return acc;
         }, {} as Record<string, any>) as IPanel;
 
@@ -64,21 +64,25 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
           title="Descrição"
           {...register("description")}
         />
+
         <Select
           id="status"
           title="Situação"
           values={const_status}
           {...register("status")}
         />
+
         <ComboBox
           control={control}
           fieldView="username"
-          fieldValue="userId"
+          fieldValue="id"
+          fieldData="userId"
           title="Usuário"
           src="/users"
         />
       </Form>
-      <FormMedia panelId={id} />
+
+      {id !== "0" && <FormMedia panelId={id} />}
     </div>
   );
 }

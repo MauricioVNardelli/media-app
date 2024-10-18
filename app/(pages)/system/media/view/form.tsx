@@ -3,14 +3,15 @@
 import { ButtonPalette } from "@/components/button-palette";
 import { IMedia } from "@/lib/definitions";
 import { useForm } from "react-hook-form";
-import { createMedia, updateMedia } from "../actions";
+import { createMedia, updateMedia, uploadFile } from "../actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { const_media, const_status } from "@/lib/constants";
-import { ComboBox } from "@/components/ui/combobox";
+import { InputFile } from "@/components/ui/input-file";
+import { useState } from "react";
 
 interface IFormProps {
   id: string;
@@ -20,8 +21,10 @@ interface IFormProps {
 export default function FormMedia({ id, defaultValue }: IFormProps) {
   const router = useRouter();
   const isInserting = id == "0";
+  const [file, setFile] = useState<File>();
   const {
     register,
+    control,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<IMedia>({
@@ -29,11 +32,13 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
   });
 
   async function onSubmit(data: IMedia) {
-    if (id != undefined) {
+    if (id) {
       let response;
 
-      if (isInserting) response = await createMedia(data);
-      else response = await updateMedia(id, data);
+      const newData = { fileStream: file, ...data } as IMedia;
+
+      if (isInserting) response = await createMedia(newData);
+      else response = await updateMedia(id, newData, defaultValue);
 
       if (response?.error) return toast.warning(response.error.message);
 
@@ -63,17 +68,19 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
           values={const_media}
           {...register("mediaType")}
         />
+
         <Input
           id="description"
           title="Descrição"
           {...register("description")}
         />
 
-        <Input
-          id="file"
-          title="URL"
+        <InputFile
+          title="Arquivo"
+          fieldname="file"
           className="md:col-span-2"
-          {...register("file")}
+          onFileChange={setFile}
+          control={control}
         />
       </Form>
     </div>
