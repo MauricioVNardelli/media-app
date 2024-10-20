@@ -25,7 +25,7 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
     register,
     handleSubmit,
     control,
-    formState: { isSubmitting, dirtyFields },
+    formState: { isSubmitting },
   } = useForm<IPanel>({
     defaultValues: defaultValue,
   });
@@ -35,14 +35,7 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
       let response;
 
       if (isInserting) response = await createPanel(prData);
-      else {
-        const changedData = Object.keys(dirtyFields).reduce((acc, key) => {
-          acc[key] = prData[key as keyof IPanel];
-          return acc;
-        }, {} as Record<string, any>) as IPanel;
-
-        response = await updatePanel(id, changedData);
-      }
+      else response = await updatePanel(id, prData, defaultValue);
 
       if (response?.error) return toast.warning(response.error.message);
 
@@ -59,6 +52,7 @@ export default function FormPanel({ id, defaultValue }: IFormProps) {
         className="grid md:grid-cols-2 gap-3 mt-8"
       >
         <Input id="name" title="Nome" {...register("name")} />
+
         <Input
           id="description"
           title="Descrição"

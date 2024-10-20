@@ -1,9 +1,9 @@
 "use server";
 
 import { IMedia, IResultActions } from "@/lib/definitions";
-import { TreatError } from "@/lib/utils";
+import { getDifferencesData, TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
-import { put } from "@vercel/blob";
+import { put, del, list } from "@vercel/blob";
 
 export async function getMedias(): Promise<IMedia[]> {
   const medias = (await api.get("/medias")).data as IMedia[];
@@ -22,25 +22,25 @@ export async function updateMedia(
   prData: IMedia,
   prDataOld: IMedia
 ): Promise<IResultActions | undefined> {
-  const data = JSON.stringify({
-    name: prData.name,
-    description: prData.description,
-    status: prData.status,
-    mediaType: prData.mediaType,
-    file: prData.file,
-  } as IMedia);
-
-  const dataJSON = JSON.parse(data);
-
   try {
-    if (prData.file !== prDataOld.file) {
-      if (prData.fileStream) await uploadFile("AR", prData.fileStream);
+    if (prData.status == "INATIVO" && prData.file !== "") {
+      await deleteFile(prData.file);
+
+      prData.file = "";
     }
 
-    await api.patch(`/media/${prId}`, dataJSON);
+    const newData = getDifferencesData(prDataOld, prData);
+    console.log("newData", newData);
+
+    await api.patch(`/media/${prId}`, newData);
+
+    if (prDataOld.file !== prData.file && prData.file !== "")
+      deleteFile(prDataOld.file);
 
     return { sucess: { value: "updated" } };
   } catch (error) {
+    if (prData.file !== "") deleteFile(prData.file);
+
     return TreatError(error);
   }
 }
@@ -53,14 +53,11 @@ export async function createMedia(
 
     return { sucess: { value: "created" } };
   } catch (error) {
+    deleteFile(prData.file);
     return TreatError(error);
   }
 }
 
-export async function uploadFile(prCompanyName: string, prFile: File) {
-  const blob = await put(prCompanyName + "/" + prFile.name, prFile, {
-    access: "public",
-  });
-
-  return blob;
+export async function deleteFile(prUrl: string) {
+  await del(prUrl);
 }

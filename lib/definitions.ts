@@ -42,8 +42,11 @@ export interface IMedia extends IBase {
   description: string;
   status: type_status;
   file: string;
-  fileStream?: File;
-  duration?: number;
+}
+
+export interface IMediaPanel extends IMedia {
+  duration: number;
+  order: number;
 }
 
 export interface IPanelMedia {

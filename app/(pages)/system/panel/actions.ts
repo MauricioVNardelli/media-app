@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { IMedia, IPanel, IPanelMedia, IResultActions } from "@/lib/definitions";
-import { TreatError } from "@/lib/utils";
+import { getDifferencesData, TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
 
 export async function getPanels(): Promise<IPanel[]> {
@@ -71,10 +71,13 @@ export async function deleteMediaPanel(prPanelId: string, prMediaId: string) {
 
 export async function updatePanel(
   prId: string,
-  prData: IPanel
+  prData: IPanel,
+  prDefaultValue: IPanel
 ): Promise<IResultActions | undefined> {
+  const changeData = getDifferencesData(prDefaultValue, prData);
+
   try {
-    await api.patch(`/panel/${prId}`, prData);
+    await api.patch(`/panel/${prId}`, changeData);
 
     return { sucess: { value: "updated" } };
   } catch (error) {

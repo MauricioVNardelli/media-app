@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { IUser } from "./definitions";
 import { jwtDecode } from "jwt-decode";
 import { api } from "@/services/api";
+import { list } from "@vercel/blob";
 
 export async function getUser(): Promise<IUser | undefined> {
   const cookieStore = cookies();
@@ -27,4 +28,10 @@ export async function getValueFromUrl(prUrl: string): Promise<any> {
 
 export async function signOut() {
   cookies().delete("token");
+}
+
+export async function getAllBlobs(prFolder: string) {
+  return await list({
+    prefix: prFolder,
+  });
 }

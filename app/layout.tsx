@@ -40,6 +40,7 @@ export default function RootLayout({
             classNames: {
               toast: "bg-gray-800 border-gray-600",
               warning: "text-yellow-400",
+              success: "text-green-800",
               title: "text-white",
             },
           }}

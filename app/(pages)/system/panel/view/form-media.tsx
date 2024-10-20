@@ -71,6 +71,7 @@ export function FormMedia(props: { panelId: string }) {
         <ComboBox
           fieldView="name"
           fieldValue="id"
+          fieldData="midiaId"
           title="Nome"
           src="/medias"
           className="flex-1"
@@ -108,7 +109,7 @@ export function FormMedia(props: { panelId: string }) {
           onRemoveClick={handleRemove}
         />
       ) : (
-        <p className="text-white">Carregando midias...</p>
+        <p className="text-white">Carregando mídias...</p>
       )}
     </div>
   );

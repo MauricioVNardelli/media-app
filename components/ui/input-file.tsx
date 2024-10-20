@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { ChangeEvent, useRef, useState } from "react";
+import { Airplay, Upload } from "lucide-react";
+import { ChangeEvent, useRef } from "react";
 import { Controller } from "react-hook-form";
 
 interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -32,26 +33,50 @@ function InputFileComponent({
     }
   }
 
+  function handlePreviewOnClick() {
+    alert("Pré-visualizacao em desenvolvimento");
+  }
+
   return (
     <div
       id="input-file"
       className={clsx("flex flex-col ", hidden && "hidden", classNameProps)}
-      onClick={handleOnClick}
     >
       {title && <p className="text-gray-400 mb-1">{title}</p>}
 
-      <input
-        placeholder="Selecione um arquivo..."
-        readOnly={true}
+      <div
         className={clsx(
-          "px-4 outline-none h-10 w-full rounded-md border cursor-pointer",
+          "flex rounded-md border",
           //colors
           "bg-gray-800 text-gray-300 border-gray-600 disabled:text-gray-600",
           //focus
           "focus-within:ring-1 focus-within:ring-indigo-500 focus-within:border-indigo-500"
         )}
-        {...otherProps}
-      />
+      >
+        <input
+          placeholder="Selecione um arquivo..."
+          readOnly={true}
+          className={clsx(
+            "px-4 outline-none h-10 w-full rounded-s-md",
+            "bg-gray-800"
+          )}
+          {...otherProps}
+        />
+        <button
+          type="button"
+          onClick={handleOnClick}
+          className="flex items-center justify-center h-full w-10 hover:text-gray-400"
+        >
+          <Upload />
+        </button>
+        <button
+          type="button"
+          onClick={handlePreviewOnClick}
+          className="flex items-center justify-center h-full w-14 hover:text-gray-400"
+        >
+          <Airplay />
+        </button>
+      </div>
 
       <input
         type="file"

@@ -21,3 +21,12 @@ export function TreatError(error: any): IResultActions | undefined {
     };
   }
 }
+
+export function getDifferencesData(prData: any, prNewData: any) {
+  return Object.keys(prData).reduce((diff: any, key) => {
+    if (prData[key] !== prNewData[key]) {
+      diff[key] = prNewData[key];
+    }
+    return diff;
+  }, {});
+}

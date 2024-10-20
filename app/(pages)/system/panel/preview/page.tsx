@@ -4,12 +4,12 @@ import { GlobalContext } from "@/app/contexts/global";
 import { Media } from "@/components/media";
 import { ComboBox } from "@/components/ui/combobox";
 import { getValueFromUrl } from "@/lib/actions";
-import { IMedia, IPanel } from "@/lib/definitions";
+import { IMediaPanel, IPanel } from "@/lib/definitions";
 import { useContext, useEffect, useState } from "react";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
-  const [medias, setMedias] = useState<IMedia[]>();
+  const [medias, setMedias] = useState<IMediaPanel[]>();
   const [panelId, setPanelId] = useState("");
 
   async function getMedias() {
@@ -19,7 +19,15 @@ export default function Dashboard() {
       if (response) {
         const dataMedia = (await getValueFromUrl(
           `/panel/${response.id}/media`
-        )) as IMedia[];
+        )) as IMediaPanel[];
+
+        dataMedia.sort((a, b) => {
+          if (a.order < b.order) return -1;
+
+          if (a.order > b.order) return 1;
+
+          return 0;
+        });
 
         setMedias(dataMedia);
       }
@@ -36,6 +44,7 @@ export default function Dashboard() {
         <ComboBox
           fieldValue="id"
           fieldView="name"
+          fieldData="id"
           src="/panels"
           title="Painel"
           onValueChange={setPanelId}

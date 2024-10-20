@@ -3,7 +3,7 @@
 import { ButtonPalette } from "@/components/button-palette";
 import { IMedia } from "@/lib/definitions";
 import { useForm } from "react-hook-form";
-import { createMedia, updateMedia, uploadFile } from "../actions";
+import { createMedia, updateMedia } from "../actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Form } from "@/components/ui/form";
@@ -12,6 +12,7 @@ import { Select } from "@/components/ui/select";
 import { const_media, const_status } from "@/lib/constants";
 import { InputFile } from "@/components/ui/input-file";
 import { useState } from "react";
+import { upload } from "@vercel/blob/client";
 
 interface IFormProps {
   id: string;
@@ -26,24 +27,31 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
     register,
     control,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, dirtyFields },
   } = useForm<IMedia>({
     defaultValues: defaultValue,
   });
 
-  async function onSubmit(data: IMedia) {
-    if (id) {
-      let response;
+  async function onSubmit(prData: IMedia) {
+    let response;
+    let blob;
 
-      const newData = { fileStream: file, ...data } as IMedia;
-
-      if (isInserting) response = await createMedia(newData);
-      else response = await updateMedia(id, newData, defaultValue);
-
-      if (response?.error) return toast.warning(response.error.message);
-
-      return router.push("/system/media");
+    //Se acabou selecionando a mesma imagem vai ser atualizado igual
+    if (file && dirtyFields.file) {
+      blob = await upload("AR/" + file.name, file, {
+        access: "public",
+        handleUploadUrl: "/api/file/upload",
+      });
     }
+
+    if (blob) prData.file = blob.url;
+
+    if (isInserting) response = await createMedia(prData);
+    else response = await updateMedia(id, prData, defaultValue);
+
+    if (response?.error) return toast.warning(response.error.message);
+
+    return router.push("/system/media");
   }
 
   return (
