@@ -6,11 +6,11 @@ import { Media } from "@/components/media";
 import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { getValueFromUrl } from "@/lib/actions";
-import { IMedia, IPanel } from "@/lib/definitions";
+import { IMediaPanel, IPanel } from "@/lib/definitions";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
-  const [medias, setMedias] = useState<IMedia[]>();
+  const [medias, setMedias] = useState<IMediaPanel[]>();
   const [start, setStart] = useState(false);
 
   async function getMedias() {
@@ -21,7 +21,7 @@ export default function Dashboard() {
     if (data && data.length > 0) {
       const dataMedia = (await getValueFromUrl(
         `/panel/${data[0].id}/media`
-      )) as IMedia[];
+      )) as IMediaPanel[];
 
       setMedias(dataMedia);
     }

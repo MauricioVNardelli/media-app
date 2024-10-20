@@ -1,10 +1,10 @@
 "use client";
 
-import { IMedia } from "@/lib/definitions";
+import { IMediaPanel } from "@/lib/definitions";
 import { useEffect, useState } from "react";
 
 interface IMediaProps {
-  medias: IMedia[];
+  medias: IMediaPanel[];
   className?: string;
 }
 
