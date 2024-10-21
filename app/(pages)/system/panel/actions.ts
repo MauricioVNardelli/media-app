@@ -1,7 +1,13 @@
 "use server";
 
 import { z } from "zod";
-import { IMedia, IPanel, IPanelMedia, IResultActions } from "@/lib/definitions";
+import {
+  IMedia,
+  IMediaPanel,
+  IPanel,
+  IPanelMedia,
+  IResultActions,
+} from "@/lib/definitions";
 import { getDifferencesData, TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
 
@@ -17,9 +23,17 @@ export async function getPanel(prId: string): Promise<IPanel> {
   return response;
 }
 
-export async function getMedias(prPanelId: string): Promise<IMedia[]> {
+export async function getMedias(prPanelId: string): Promise<IMediaPanel[]> {
   const response = (await api.get(`/panel/${prPanelId}/media`))
-    .data as IMedia[];
+    .data as IMediaPanel[];
+
+  response.sort((a, b) => {
+    if (a.order < b.order) return -1;
+
+    if (a.order > b.order) return 1;
+
+    return 0;
+  });
 
   return response;
 }

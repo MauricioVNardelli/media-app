@@ -20,8 +20,16 @@ export default function Dashboard() {
 
     if (data && data.length > 0) {
       const dataMedia = (await getValueFromUrl(
-        `/panel/${data[0].id}/media`
+        `/panel/${data[0].id}/media?mediaStatus=ATIVO`
       )) as IMediaPanel[];
+
+      dataMedia.sort((a, b) => {
+        if (a.order < b.order) return -1;
+
+        if (a.order > b.order) return 1;
+
+        return 0;
+      });
 
       setMedias(dataMedia);
     }

@@ -18,7 +18,7 @@ export default function Dashboard() {
 
       if (response) {
         const dataMedia = (await getValueFromUrl(
-          `/panel/${response.id}/media`
+          `/panel/${response.id}/media?mediaStatus=ATIVO`
         )) as IMediaPanel[];
 
         dataMedia.sort((a, b) => {

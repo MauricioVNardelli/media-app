@@ -3,7 +3,7 @@
 import { IMedia, IResultActions } from "@/lib/definitions";
 import { getDifferencesData, TreatError } from "@/lib/utils";
 import { api } from "@/services/api";
-import { put, del, list } from "@vercel/blob";
+import { del } from "@vercel/blob";
 
 export async function getMedias(): Promise<IMedia[]> {
   const medias = (await api.get("/medias")).data as IMedia[];
@@ -23,11 +23,11 @@ export async function updateMedia(
   prDataOld: IMedia
 ): Promise<IResultActions | undefined> {
   try {
-    if (prData.status == "INATIVO" && prData.file !== "") {
+    /*if (prData.status == "INATIVO" && prData.file !== "") {
       await deleteFile(prData.file);
 
       prData.file = "";
-    }
+    }*/
 
     const newData = getDifferencesData(prDataOld, prData);
     console.log("newData", newData);

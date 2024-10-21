@@ -57,14 +57,17 @@ export default function NavBar() {
           <NavBarLi
             id="/system/panel"
             name="Painel"
-            isActive={pathname == "/system/panel"}
+            isActive={
+              pathname.startsWith("/system/panel") &&
+              pathname !== "/system/panel/preview"
+            }
             onClick={liHandleClick}
           />
 
           <NavBarLi
             id="/system/media"
             name="Mídia"
-            isActive={pathname == "/system/media"}
+            isActive={pathname.startsWith("/system/media")}
             onClick={liHandleClick}
           />
 

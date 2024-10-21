@@ -23,7 +23,7 @@ export function Input({
         className={clsx(
           "px-4 outline-none h-10 w-full rounded-md border",
           //colors
-          "bg-gray-800 text-gray-300 border-gray-600 disabled:text-gray-600",
+          "bg-gray-800 text-gray-300 border-gray-600 disabled:text-gray-400",
           //focus
           "focus-within:ring-1 focus-within:ring-indigo-500 focus-within:border-indigo-500"
         )}
