@@ -105,7 +105,7 @@ export default function NavBar() {
               <ul className="text-gray-300 ">
                 <li
                   onClick={() => {
-                    router.push(`/system/user/view/${user?.id}`);
+                    router.push(`/system/user/view/${user?.id}/password`);
                   }}
                   className={clsx(
                     "flex items-center font-semibold rounded-md h-10 px-4",

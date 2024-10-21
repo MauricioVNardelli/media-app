@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { getUser } from "../../../actions";
 import { useEffect, useState } from "react";
 import { IUser } from "@/lib/definitions";
+import { toast } from "sonner";
 
 interface IChangePasswordUser {
   password: string;
@@ -38,8 +39,11 @@ export default function PageChangePassword({
       });
   }, []);
 
-  async function onSubmit(data: IChangePasswordUser) {
-    //
+  async function onSubmit(prData: IChangePasswordUser) {
+    if (prData.newPassword !== prData.confirmPassword)
+      return toast.warning("A nova senha não é igual a senha de confirmação!");
+
+    console.log("data", prData);
   }
 
   if (!user) return <p className="text-gray-300">Carregando...</p>;

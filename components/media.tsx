@@ -32,20 +32,9 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
         />
       ) : (
         <video className="w-full h-full max-h-screen" preload="none" autoPlay>
-          <source src="/videos/video01.mp4" type="video/mp4" />
+          <source src={medias[currentMedia].file} type="video/mp4" />
         </video>
       )}
     </div>
   );
 }
-
-/*
-<iframe
-          className="aspect-video w-full"
-          src={`${medias[currentMedia].file}&controls=0&autoplay=1`}
-          title="YouTube video player"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        ></iframe>
-        */
