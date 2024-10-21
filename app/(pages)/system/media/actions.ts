@@ -23,11 +23,11 @@ export async function updateMedia(
   prDataOld: IMedia
 ): Promise<IResultActions | undefined> {
   try {
-    /*if (prData.status == "INATIVO" && prData.file !== "") {
+    if (prData.status == "INATIVO" && prData.file !== "") {
       await deleteFile(prData.file);
 
       prData.file = "";
-    }*/
+    }
 
     const newData = getDifferencesData(prDataOld, prData);
     console.log("newData", newData);
