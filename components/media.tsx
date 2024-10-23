@@ -1,7 +1,7 @@
 "use client";
 
 import { IMediaPanel } from "@/lib/definitions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IMediaProps {
   medias: IMediaPanel[];
@@ -11,11 +11,13 @@ interface IMediaProps {
 export function Media({ medias, ...otherProps }: IMediaProps) {
   const [currentMedia, setCurrentMedia] = useState<number>(0);
 
-  setTimeout(() => {
-    if (currentMedia == medias.length - 1) return setCurrentMedia(0);
+  useEffect(() => {
+    setTimeout(() => {
+      if (currentMedia == medias.length - 1) return setCurrentMedia(0);
 
-    return setCurrentMedia(currentMedia + 1);
-  }, medias[currentMedia].duration * 1000);
+      return setCurrentMedia(currentMedia + 1);
+    }, medias[currentMedia].duration * 1000);
+  }, [currentMedia]);
 
   if (!medias)
     return (
