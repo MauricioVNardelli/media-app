@@ -37,7 +37,6 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
         <video
           key={medias[currentMedia].file}
           className="w-full h-full max-h-screen"
-          preload="none"
           autoPlay
           loop={medias.length == 1 ? true : false}
         >
