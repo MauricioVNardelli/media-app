@@ -1,7 +1,7 @@
 "use client";
 
 import { IMediaPanel } from "@/lib/definitions";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface IMediaProps {
   medias: IMediaPanel[];
@@ -36,7 +36,7 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
           className="w-full h-full max-h-screen"
         />
       ) : (
-        <video className="w-full h-full max-h-screen" preload="none" autoPlay>
+        <video className="w-full h-full max-h-screen" preload="auto" autoPlay>
           <source src={medias[currentMedia].file} type="video/mp4" />
         </video>
       )}
