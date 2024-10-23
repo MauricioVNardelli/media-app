@@ -28,15 +28,21 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
     );
 
   return (
-    <div id="component-media" key={reload} className={otherProps.className}>
+    <div id="component-media" className={otherProps.className}>
       {medias[currentMedia].mediaType == "IMAGEM" ? (
         <img
+          key={medias[currentMedia].file}
           alt={medias[currentMedia].name}
           src={medias[currentMedia].file}
           className="w-full h-full max-h-screen"
         />
       ) : (
-        <video className="w-full h-full max-h-screen" preload="auto" autoPlay>
+        <video
+          key={medias[currentMedia].file}
+          className="w-full h-full max-h-screen"
+          preload="auto"
+          autoPlay
+        >
           <source src={medias[currentMedia].file} type="video/mp4" />
         </video>
       )}
