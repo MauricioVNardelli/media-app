@@ -10,11 +10,8 @@ interface IMediaProps {
 
 export function Media({ medias, ...otherProps }: IMediaProps) {
   const [currentMedia, setCurrentMedia] = useState<number>(0);
-  const [reload, setReload] = useState(0);
 
   setTimeout(() => {
-    setReload(reload + 1);
-
     if (currentMedia == medias.length - 1) return setCurrentMedia(0);
 
     return setCurrentMedia(currentMedia + 1);
@@ -40,8 +37,9 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
         <video
           key={medias[currentMedia].file}
           className="w-full h-full max-h-screen"
-          preload="auto"
+          preload="none"
           autoPlay
+          loop={medias.length == 1 ? true : false}
         >
           <source src={medias[currentMedia].file} type="video/mp4" />
         </video>
