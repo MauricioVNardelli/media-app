@@ -23,23 +23,23 @@ export async function updateMedia(
   prDataOld: IMedia
 ): Promise<IResultActions | undefined> {
   try {
-    if (prData.status == "INATIVO" && prData.file !== "") {
+    /*if (prData.status == "INATIVO" && prData.file !== "") {
       await deleteFile(prData.file);
 
       prData.file = "";
-    }
+    }*/
 
     const newData = getDifferencesData(prDataOld, prData);
     console.log("newData", newData);
 
     await api.patch(`/media/${prId}`, newData);
 
-    if (prDataOld.file !== prData.file && prData.file !== "")
-      deleteFile(prDataOld.file);
+    /*if (prDataOld.file !== prData.file && prData.file !== "")
+      deleteFile(prDataOld.file);*/
 
     return { sucess: { value: "updated" } };
   } catch (error) {
-    if (prData.file !== "") deleteFile(prData.file);
+    //if (prData.file !== "") deleteFile(prData.file);
 
     return TreatError(error);
   }
@@ -53,7 +53,7 @@ export async function createMedia(
 
     return { sucess: { value: "created" } };
   } catch (error) {
-    deleteFile(prData.file);
+    //deleteFile(prData.file);
     return TreatError(error);
   }
 }

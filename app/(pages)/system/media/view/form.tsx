@@ -34,17 +34,17 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
 
   async function onSubmit(prData: IMedia) {
     let response;
-    let blob;
+    //let blob;
 
     //Se acabou selecionando a mesma imagem vai ser atualizado igual
-    if (file && dirtyFields.file) {
+    /*if (file && dirtyFields.file) {
       blob = await upload("AR/" + file.name, file, {
         access: "public",
         handleUploadUrl: "/api/file/upload",
       });
-    }
+    }*/
 
-    if (blob) prData.file = blob.url;
+    //if (blob) prData.file// = blob.url;
 
     if (isInserting) response = await createMedia(prData);
     else response = await updateMedia(id, prData, defaultValue);
@@ -83,13 +83,7 @@ export default function FormMedia({ id, defaultValue }: IFormProps) {
           {...register("description")}
         />
 
-        <InputFile
-          title="Arquivo"
-          fieldname="file"
-          className="md:col-span-2"
-          onFileChange={setFile}
-          control={control}
-        />
+        <Input title="URL" className="md:col-span-2" {...register("file")} />
       </Form>
     </div>
   );
