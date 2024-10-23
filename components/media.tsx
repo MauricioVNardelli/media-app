@@ -9,21 +9,26 @@ interface IMediaProps {
 }
 
 export function Media({ medias, ...otherProps }: IMediaProps) {
-  const [currentMedia, setCurrentMedia] = useState(0);
+  const [currentMedia, setCurrentMedia] = useState<number>(0);
+  const [reload, setReload] = useState(0);
 
-  useEffect(() => {
-    if (medias && medias[currentMedia].duration) {
-      let duration = medias[currentMedia].duration * 1000;
+  setTimeout(() => {
+    setReload(reload + 1);
 
-      setTimeout(() => {
-        if (currentMedia == medias.length - 1) setCurrentMedia(0);
-        else setCurrentMedia(currentMedia + 1);
-      }, duration);
-    }
-  }, [medias, currentMedia]);
+    if (currentMedia == medias.length - 1) return setCurrentMedia(0);
+
+    return setCurrentMedia(currentMedia + 1);
+  }, medias[currentMedia].duration * 1000);
+
+  if (!medias)
+    return (
+      <div>
+        <p>Carregando....</p>
+      </div>
+    );
 
   return (
-    <div id="component-media" className={otherProps.className}>
+    <div id="component-media" key={reload} className={otherProps.className}>
       {medias[currentMedia].mediaType == "IMAGEM" ? (
         <img
           alt={medias[currentMedia].name}
