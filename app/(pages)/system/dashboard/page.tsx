@@ -63,10 +63,14 @@ export default function Dashboard() {
   }
 
   async function handleClearCache() {
-    const db = await openDB("mediaDB");
-    db.clear("files");
+    try {
+      const db = await openDB("mediaDB");
+      db.clear("files");
 
-    toast.success("Limpeza do cache realizada!");
+      toast.success("Limpeza do cache realizada!");
+    } catch (error) {
+      toast.warning(error as string);
+    }
   }
 
   if (medias && medias.length == 0)

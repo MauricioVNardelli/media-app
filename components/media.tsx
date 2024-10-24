@@ -21,7 +21,7 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
       await addMediaDB(media.file, media.id).then((response) => {
         media.file = response;
 
-        console.log("carregou ", media.name);
+        //console.log("carregou ", media.name);
       });
     });
 
