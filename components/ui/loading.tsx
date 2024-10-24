@@ -1,9 +1,12 @@
 import { Loader } from "lucide-react";
 
-export function Loading() {
+export function Loading({ text }: { text?: string }) {
   return (
     <div className="flex items-center justify-center h-full w-full opacity-90 text-white">
-      <Loader className="animate-spin" />
+      <div className="flex flex-col items-center">
+        <Loader className="animate-spin" />
+        {text && <p className="mt-5 text-white">{text}</p>}
+      </div>
     </div>
   );
 }

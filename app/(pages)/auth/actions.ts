@@ -18,14 +18,26 @@ export async function signIn(
   data: FormData
 ): Promise<IResultActions | undefined> {
   let resultParse;
-  let datatemp = {
-    username: "tv.refeitorio",
-    password: "#tvAR123",
-  };
 
   if (Object.fromEntries(data).username) {
     resultParse = signInSchema.safeParse(Object.fromEntries(data));
-  } else resultParse = signInSchema.safeParse(datatemp);
+  } else {
+    const code = Object.fromEntries(data).code;
+
+    if (code !== "1244")
+      return {
+        error: {
+          message: "Código inválido",
+        },
+      };
+
+    let datatemp = {
+      username: "tv.refeitorio",
+      password: "#tvAR123",
+    };
+
+    resultParse = signInSchema.safeParse(datatemp);
+  }
 
   if (!resultParse.success) {
     const errorMsg = resultParse.error.flatten().fieldErrors.password?.[0];
