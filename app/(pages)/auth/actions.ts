@@ -17,17 +17,15 @@ export async function signIn(
   _: unknown,
   data: FormData
 ): Promise<IResultActions | undefined> {
+  let resultParse;
   let datatemp = {
     username: "tv.refeitorio",
     password: "#tvAR123",
   };
 
-  console.log("username", Object.fromEntries(data));
   if (Object.fromEntries(data).username) {
-    datatemp = Object.fromEntries(data);
-  }
-
-  const resultParse = signInSchema.safeParse(datatemp);
+    resultParse = signInSchema.safeParse(Object.fromEntries(data));
+  } else resultParse = signInSchema.safeParse(datatemp);
 
   if (!resultParse.success) {
     const errorMsg = resultParse.error.flatten().fieldErrors.password?.[0];
