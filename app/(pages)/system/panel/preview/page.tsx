@@ -2,10 +2,13 @@
 
 import { GlobalContext } from "@/app/contexts/global";
 import { Media } from "@/components/media";
+import { Button } from "@/components/ui/button";
 import { ComboBox } from "@/components/ui/combobox";
 import { getValueFromUrl } from "@/lib/actions";
 import { IMediaPanel, IPanel } from "@/lib/definitions";
+import { openDB } from "idb";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
@@ -38,9 +41,16 @@ export default function Dashboard() {
     getMedias();
   }, [user, panelId]);
 
+  async function handleClearCache() {
+    const db = await openDB("mediaDB");
+    db.clear("files");
+
+    toast.success("Limpeza do cache realizada!");
+  }
+
   return (
     <div>
-      {user?.role !== "TV" && (
+      <div className="flex space-x-2">
         <ComboBox
           fieldValue="id"
           fieldView="name"
@@ -49,9 +59,13 @@ export default function Dashboard() {
           title="Painel"
           onValueChange={setPanelId}
           value={panelId}
-          className="mb-4"
+          className="flex-1 mb-4"
         />
-      )}
+
+        <Button type="button" onClick={handleClearCache} className="w-28 mt-7">
+          Limpar cache
+        </Button>
+      </div>
 
       {medias && (
         <div className="flex justify-center max-h-[calc(100vh-300px)] rounded-md border-4 border-gray-800">

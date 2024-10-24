@@ -42,8 +42,6 @@ export default function PageChangePassword({
   async function onSubmit(prData: IChangePasswordUser) {
     if (prData.newPassword !== prData.confirmPassword)
       return toast.warning("A nova senha não é igual a senha de confirmação!");
-
-    console.log("data", prData);
   }
 
   if (!user) return <p className="text-gray-300">Carregando...</p>;

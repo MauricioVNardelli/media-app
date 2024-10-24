@@ -30,8 +30,6 @@ export async function updateMedia(
     }*/
 
     const newData = getDifferencesData(prDataOld, prData);
-    console.log("newData", newData);
-
     await api.patch(`/media/${prId}`, newData);
 
     /*if (prDataOld.file !== prData.file && prData.file !== "")

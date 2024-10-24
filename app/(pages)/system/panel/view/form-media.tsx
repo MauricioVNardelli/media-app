@@ -14,6 +14,7 @@ import { Form } from "@/components/ui/form";
 const headerTable = [
   { fieldName: "order", title: "Seq" },
   { fieldName: "name", title: "Nome" },
+  { fieldName: "mediaType", title: "Tipo" },
   { fieldName: "status", title: "Situação" },
   { fieldName: "duration", title: "Duração (s)" },
 ];

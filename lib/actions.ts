@@ -5,6 +5,7 @@ import { IUser } from "./definitions";
 import { jwtDecode } from "jwt-decode";
 import { api } from "@/services/api";
 import { list } from "@vercel/blob";
+import { TreatError } from "./utils";
 
 export async function getUser(): Promise<IUser | undefined> {
   const cookieStore = cookies();
@@ -21,9 +22,13 @@ export async function getUser(): Promise<IUser | undefined> {
 }
 
 export async function getValueFromUrl(prUrl: string): Promise<any> {
-  const response = await api.get(prUrl);
+  try {
+    const response = await api.get(prUrl);
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    return TreatError(error);
+  }
 }
 
 export async function signOut() {
@@ -34,4 +39,10 @@ export async function getAllBlobs(prFolder: string) {
   return await list({
     prefix: prFolder,
   });
+}
+
+export async function getBlob(prUrl: string) {
+  const response = await fetch(prUrl);
+
+  return response.blob();
 }

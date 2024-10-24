@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { getValueFromUrl } from "@/lib/actions";
 import { IMediaPanel, IPanel } from "@/lib/definitions";
+import { openDB } from "idb";
+import { toast } from "sonner";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
@@ -31,8 +33,10 @@ export default function Dashboard() {
         return 0;
       });
 
-      setMedias(dataMedia);
+      return setMedias(dataMedia);
     }
+
+    return setMedias([]);
   }
 
   useEffect(() => {
@@ -58,6 +62,20 @@ export default function Dashboard() {
     }
   }
 
+  async function handleClearCache() {
+    const db = await openDB("mediaDB");
+    db.clear("files");
+
+    toast.success("Limpeza do cache realizada!");
+  }
+
+  if (medias && medias.length == 0)
+    return (
+      <div>
+        <p className="text-white">Nenhuma midia encontrada</p>
+      </div>
+    );
+
   return (
     <div
       id="page-dashboard"
@@ -68,14 +86,23 @@ export default function Dashboard() {
       ) : medias && start ? (
         <Media medias={medias} />
       ) : (
-        <Button
-          id="button-start"
-          className="w-32 h-24 font-semibold"
-          type="button"
-          onClick={handleButtonStart}
-        >
-          Iniciar
-        </Button>
+        <div className="flex space-x-4">
+          <Button
+            className="w-32 h-24 font-semibold"
+            type="button"
+            onClick={handleButtonStart}
+          >
+            Iniciar
+          </Button>
+
+          <Button
+            className="w-32 h-24 font-semibold bg-red-700 hover:bg-red-900"
+            type="button"
+            onClick={handleClearCache}
+          >
+            Limpar cache
+          </Button>
+        </div>
       )}
     </div>
   );

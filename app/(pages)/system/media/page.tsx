@@ -9,6 +9,7 @@ import { ButtonPalette } from "@/components/button-palette";
 
 const headerColumns = [
   { fieldName: "name", title: "Nome" },
+  { fieldName: "mediaType", title: "Tipo" },
   { fieldName: "description", title: "Descrição" },
   { fieldName: "status", title: "Status" },
 ];
