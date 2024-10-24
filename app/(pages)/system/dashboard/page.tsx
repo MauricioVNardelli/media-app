@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Loading } from "@/components/ui/loading";
 import { getValueFromUrl } from "@/lib/actions";
 import { IMediaPanel, IPanel } from "@/lib/definitions";
-import { openDB } from "idb";
-import { toast } from "sonner";
 
 export default function Dashboard() {
   const { user } = useContext(GlobalContext);
@@ -62,17 +60,6 @@ export default function Dashboard() {
     }
   }
 
-  async function handleClearCache() {
-    try {
-      const db = await openDB("mediaDB");
-      db.clear("files");
-
-      toast.success("Limpeza do cache realizada!");
-    } catch (error) {
-      toast.warning(error as string);
-    }
-  }
-
   if (medias && medias.length == 0)
     return (
       <div>
@@ -90,23 +77,13 @@ export default function Dashboard() {
       ) : medias && start ? (
         <Media medias={medias} />
       ) : (
-        <div className="flex space-x-4">
-          <Button
-            className="w-32 h-24 font-semibold"
-            type="button"
-            onClick={handleButtonStart}
-          >
-            Iniciar
-          </Button>
-
-          <Button
-            className="w-32 h-24 font-semibold bg-red-700 hover:bg-red-900"
-            type="button"
-            onClick={handleClearCache}
-          >
-            Limpar cache
-          </Button>
-        </div>
+        <Button
+          className="w-32 h-24 font-semibold"
+          type="button"
+          onClick={handleButtonStart}
+        >
+          Iniciar
+        </Button>
       )}
     </div>
   );

@@ -3,7 +3,7 @@
 import { IMediaPanel } from "@/lib/definitions";
 import { useEffect, useState } from "react";
 import { Loading } from "./ui/loading";
-import { addMediaDB } from "@/lib/db";
+import { getBlobFromUrl } from "@/lib/actions";
 
 interface IMediaProps {
   medias: IMediaPanel[];
@@ -18,11 +18,10 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
     const uploadMedias = medias.map(async (media) => {
       setLoadingMedia(media.name);
 
-      await addMediaDB(media.file, media.id).then((response) => {
-        media.file = response;
-
-        //console.log("carregou ", media.name);
-      });
+      console.log("carregando ", media.name);
+      const blob = await getBlobFromUrl(media.file);
+      media.file = URL.createObjectURL(blob);
+      console.log("carregou ", media.name);
     });
 
     await Promise.all(uploadMedias).then(() => {
@@ -41,9 +40,7 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
 
         return setCurrentMedia(currentMedia + 1);
       }, medias[currentMedia].duration * 1000);
-  }
 
-  if (currentMedia !== undefined)
     return (
       <div id="component-media" className={otherProps.className}>
         {medias[currentMedia].mediaType == "IMAGEM" ? (
@@ -55,12 +52,6 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
           />
         ) : (
           <div>
-            <button
-              className="text-white"
-              //onClick={() => document.getElementById("video").play()}
-            >
-              Play Video
-            </button>
             <video
               id="video"
               key={medias[currentMedia].file}
@@ -74,13 +65,11 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
         )}
       </div>
     );
+  }
 
   return (
     <div>
-      <Loading
-        key={loadingMedia}
-        text={'Carregando... "' + loadingMedia + '"'}
-      />
+      <Loading text={'Carregando... "' + loadingMedia + '"'} />
     </div>
   );
 }

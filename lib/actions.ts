@@ -41,8 +41,8 @@ export async function getAllBlobs(prFolder: string) {
   });
 }
 
-export async function getBlob(prUrl: string) {
+export async function getBlobFromUrl(prUrl: string) {
   const response = await fetch(prUrl);
 
-  return response.blob();
+  return await response.blob();
 }
