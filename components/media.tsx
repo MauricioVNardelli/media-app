@@ -49,14 +49,23 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
             className="w-full h-full max-h-screen"
           />
         ) : (
-          <video
-            key={medias[currentMedia].file}
-            className="w-full h-full max-h-screen"
-            autoPlay
-            loop={medias.length == 1 ? true : false}
-          >
-            <source src={medias[currentMedia].file} type="video/mp4" />
-          </video>
+          <div>
+            <button
+              className="text-white"
+              onClick={() => document.getElementById("video").play()}
+            >
+              Play Video
+            </button>
+            <video
+              id="video"
+              key={medias[currentMedia].file}
+              className="w-full h-full max-h-screen"
+              autoPlay
+              loop={medias.length == 1 ? true : false}
+            >
+              <source src={medias[currentMedia].file} type="video/mp4" />
+            </video>
+          </div>
         )}
       </div>
     );
