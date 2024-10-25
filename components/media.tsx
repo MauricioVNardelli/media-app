@@ -76,6 +76,7 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
             >
               PLAY
             </button>
+            <p>{url}</p>
             <video
               id="video"
               key={medias[currentMedia].id}
