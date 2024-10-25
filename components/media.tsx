@@ -68,7 +68,7 @@ export function Media({ medias, ...otherProps }: IMediaProps) {
             id="video"
             key={medias[currentMedia].id}
             className="w-full h-full max-h-screen"
-            autoPlay
+            //autoPlay
             loop={medias.length == 1 ? true : false}
           >
             <source src={url} type="video/mp4" />
