@@ -13,55 +13,66 @@ interface IMediaProps {
 export function Media({ medias, ...otherProps }: IMediaProps) {
   const [currentMedia, setCurrentMedia] = useState<number>();
   const [loadingMedia, setLoadingMedia] = useState("");
+  const [blobs, setBlobs] = useState<string[]>();
 
   async function addMediasDB() {
     const uploadMedias = medias.map(async (media) => {
       setLoadingMedia(media.name);
-
-      console.log("carregando ", media.name);
       const blob = await getBlobFromUrl(media.file);
-      media.file = URL.createObjectURL(blob);
-      console.log("carregou ", media.name);
+
+      return URL.createObjectURL(blob);
     });
 
-    await Promise.all(uploadMedias).then(() => {
+    await Promise.all(uploadMedias).then((value) => {
+      setBlobs(value);
       setCurrentMedia(0);
     });
   }
 
   useEffect(() => {
     addMediasDB();
-  }, []);
 
-  if (currentMedia !== undefined) {
-    if (medias.length > 1)
-      setTimeout(() => {
+    return () => {
+      blobs?.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [medias]);
+
+  useEffect(() => {
+    if (currentMedia !== undefined && medias.length > 1) {
+      const timeout = setTimeout(() => {
         if (currentMedia == medias.length - 1) return setCurrentMedia(0);
 
         return setCurrentMedia(currentMedia + 1);
       }, medias[currentMedia].duration * 1000);
 
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [currentMedia]);
+
+  if (currentMedia !== undefined && blobs) {
+    const url = blobs[currentMedia];
+
     return (
       <div id="component-media" className={otherProps.className}>
         {medias[currentMedia].mediaType == "IMAGEM" ? (
           <img
-            key={medias[currentMedia].file}
+            key={medias[currentMedia].id}
             alt={medias[currentMedia].name}
-            src={medias[currentMedia].file}
+            src={url}
             className="w-full h-full max-h-screen"
           />
         ) : (
-          <div>
-            <video
-              id="video"
-              key={medias[currentMedia].file}
-              className="w-full h-full max-h-screen"
-              autoPlay
-              loop={medias.length == 1 ? true : false}
-            >
-              <source src={medias[currentMedia].file} type="video/mp4" />
-            </video>
-          </div>
+          <video
+            id="video"
+            key={medias[currentMedia].id}
+            className="w-full h-full max-h-screen"
+            autoPlay
+            loop={medias.length == 1 ? true : false}
+          >
+            <source src={url} type="video/mp4" />
+          </video>
         )}
       </div>
     );

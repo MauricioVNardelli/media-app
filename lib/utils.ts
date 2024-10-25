@@ -3,8 +3,6 @@ import { IResultActions } from "./definitions";
 
 export function TreatError(error: any): IResultActions | undefined {
   if (error instanceof AxiosError) {
-    //console.log("error", error.response?.data);
-
     const response = error.response?.data as {
       message: [{ message: string }] | string;
     };
