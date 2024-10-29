@@ -17,6 +17,19 @@ export default function SystemLayout({
     setUserTV(user?.role == "TV");
   }, [user]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then((registration) => {
+          console.log("Service Worker registrado com sucesso:", registration);
+        })
+        .catch((error) => {
+          console.log("Falha no registro do Service Worker:", error);
+        });
+    }
+  }, []);
+
   return (
     <section className="flex flex-col h-full min-h-screen bg-gray-900">
       {!isUserTV && <NavBar />}
