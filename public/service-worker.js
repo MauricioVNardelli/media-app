@@ -10,7 +10,6 @@ const cacheFiles = [
 
 // Instalando o Service Worker e adicionando mídias ao cache
 self.addEventListener("install", (event) => {
-  console.log("Service Worker carregado!");
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(cacheFiles);
@@ -21,13 +20,11 @@ self.addEventListener("install", (event) => {
 // Interceptando requisições e respondendo com cache
 self.addEventListener("fetch", (event) => {
   // Checa se o recurso é de mídia
-  console.log("request", event.request.url);
   if (event.request.url.includes("/AR/")) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         if (cachedResponse) {
           // Retorna o recurso do cache
-          console.log("retornou");
           return cachedResponse;
         }
         // Faz o fetch e coloca no cache para futuras requisições
@@ -35,7 +32,6 @@ self.addEventListener("fetch", (event) => {
           return caches.open(CACHE_NAME).then((cache) => {
             cache.put(event.request, networkResponse.clone());
 
-            console.log("salvou");
             return networkResponse;
           });
         });

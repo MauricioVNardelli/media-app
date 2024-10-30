@@ -1,9 +1,10 @@
 "use client";
 
-import { GlobalContext } from "@/app/contexts/global";
-import NavBar from "@/components/ui/navbar";
 import clsx from "clsx";
+import NavBar from "@/components/ui/navbar";
+import { GlobalContext } from "@/app/contexts/global";
 import { useContext, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export default function SystemLayout({
   children,
@@ -22,11 +23,13 @@ export default function SystemLayout({
       navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
-          console.log("Service Worker registrado com sucesso:", registration);
+          console.log("Service Worker registrado com sucesso");
         })
         .catch((error) => {
           console.log("Falha no registro do Service Worker:", error);
         });
+    } else {
+      toast.error("Navegador SEM suporte ao Service Worker");
     }
   }, []);
 
