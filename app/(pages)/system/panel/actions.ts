@@ -45,21 +45,15 @@ export async function createMediaPanel(
     .object({
       panelId: z.string(),
       mediaId: z.string(),
-      duration: z.number({
-        required_error: "Duração obrigatória",
-        invalid_type_error: "Duração obrigatória",
-      }),
-      order: z.number({
-        required_error: "Ordem obrigatória",
-        invalid_type_error: "Ordem obrigatória",
-      }),
+      duration: z.number(),
+      order: z.number(),
     })
     .required();
 
   const resultParse = schema.safeParse(prData);
 
   if (!resultParse.success) {
-    const errorMsg = resultParse.error.errors[0].message;
+    const errorMsg = resultParse.error.message;
 
     if (errorMsg)
       return {

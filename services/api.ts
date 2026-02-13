@@ -7,7 +7,7 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   async function (config) {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const token = cookieStore.get("token");
 
     if (token && !config.headers["Authorization"]) {

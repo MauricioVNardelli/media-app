@@ -17,6 +17,7 @@ export async function signIn(
   _: unknown,
   data: FormData
 ): Promise<IResultActions | undefined> {
+  const cookieStore = await cookies();
   let resultParse;
 
   if (Object.fromEntries(data).username) {
@@ -33,7 +34,7 @@ export async function signIn(
 
     let datatemp = {
       username: "tv.refeitorio",
-      password: "#tvAR123",
+      password: "A12345678#",
     };
 
     resultParse = signInSchema.safeParse(datatemp);
@@ -51,9 +52,12 @@ export async function signIn(
   }
 
   try {
+    console.log(resultParse.data);
     const resAuth = (await api.post("/auth/user", resultParse.data)).data as {
       sessionKey: string;
     };
+
+    console.log(resAuth);
 
     const resSession = (
       await api.get(`/auth/user/session/${resAuth.sessionKey}`, {
@@ -63,7 +67,7 @@ export async function signIn(
       })
     ).data as { token: string };
 
-    cookies().set({
+    cookieStore.set({
       name: "token",
       value: resSession.token,
       path: "/",

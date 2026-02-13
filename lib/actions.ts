@@ -8,7 +8,7 @@ import { list } from "@vercel/blob";
 import { TreatError } from "./utils";
 
 export async function getUser(): Promise<IUser | undefined> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get("token");
 
   if (token && token.value) {
@@ -32,7 +32,8 @@ export async function getValueFromUrl(prUrl: string): Promise<any> {
 }
 
 export async function signOut() {
-  cookies().delete("token");
+  const cookieStore = await cookies();
+  cookieStore.delete("token");
 }
 
 export async function getAllBlobs(prFolder: string) {
