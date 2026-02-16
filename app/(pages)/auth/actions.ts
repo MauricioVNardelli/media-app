@@ -41,7 +41,7 @@ export async function signIn(
   }
 
   if (!resultParse.success) {
-    const errorMsg = resultParse.error.flatten().fieldErrors.password?.[0];
+    const errorMsg = resultParse.error.message;
 
     if (errorMsg)
       return {
@@ -52,12 +52,12 @@ export async function signIn(
   }
 
   try {
-    console.log(resultParse.data);
+    //console.log(resultParse.data);
     const resAuth = (await api.post("/auth/user", resultParse.data)).data as {
       sessionKey: string;
     };
 
-    console.log(resAuth);
+    //console.log(resAuth);
 
     const resSession = (
       await api.get(`/auth/user/session/${resAuth.sessionKey}`, {
