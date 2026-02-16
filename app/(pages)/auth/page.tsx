@@ -13,6 +13,7 @@ export default function SignIn() {
   const { signIn: signInCtx } = useContext(GlobalContext);
   const [isAuthCode, setIsAuthCode] = useState(false);
 
+  console.log("Passou pelo SignIn", result);
   if (result?.error || result?.sucess) {
     if (result.error) toast.warning(result?.error.message);
     else if (result.sucess) {

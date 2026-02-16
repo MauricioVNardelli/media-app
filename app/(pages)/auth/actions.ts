@@ -57,7 +57,7 @@ export async function signIn(
       sessionKey: string;
     };
 
-    //console.log(resAuth);
+    console.log("Passou pelo auth/user", resAuth);
 
     const resSession = (
       await api.get(`/auth/user/session/${resAuth.sessionKey}`, {
@@ -67,11 +67,15 @@ export async function signIn(
       })
     ).data as { token: string };
 
+    console.log("Passou pelo auth/user/session", resSession);
+
     cookieStore.set({
       name: "token",
       value: resSession.token,
       path: "/",
     });
+
+    console.log("Passou pelo cookieStore", cookieStore);
 
     api.defaults.headers.common["Authorization"] = "Bearer " + resSession.token;
 
